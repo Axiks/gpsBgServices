@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "25379138287",
+    "firebase_url": "https://gpsservice-c04dc-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "gpsservice-c04dc",
+    "storage_bucket": "gpsservice-c04dc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:25379138287:android:d7fc1cf7529e055094091a",
+        "android_client_info": {
+          "package_name": "com.example.gpsbg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "25379138287-p0oie3adacup5pjgbujknsgb3gmks4o3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFWm7F9ACXQyXXe2HYuM4pPGa0PxYuWi8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "25379138287-p0oie3adacup5pjgbujknsgb3gmks4o3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

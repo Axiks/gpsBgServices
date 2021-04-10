@@ -12,10 +12,17 @@ import android.os.IBinder;
 import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.util.TimeUtils;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.concurrent.TimeUnit;
 
 public class MyService extends Service implements LOcListenerIteerface{
     private LocationManager locationManager;
     private MyLocListener myLocListener;
+    private DatabaseReference mDataBase;
 
     public MyService() {
     }
@@ -25,6 +32,7 @@ public class MyService extends Service implements LOcListenerIteerface{
         locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         myLocListener = new MyLocListener();
         myLocListener.setlOcListenerIteerface(this);
+        mDataBase = FirebaseDatabase.getInstance().getReference("coordinates");
         checkPermission();
     }
 
@@ -38,7 +46,7 @@ public class MyService extends Service implements LOcListenerIteerface{
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
+        Log.i("Location Services", "Stop");
     }
 
     @Override
@@ -63,9 +71,20 @@ public class MyService extends Service implements LOcListenerIteerface{
         text += " ";
         text += loc.getLongitude();
         Log.i("Location Services", text);
+
+        Loc nevLocation = new Loc(loc.getLatitude(), loc.getLongitude());
+        mDataBase.push().setValue(nevLocation);
     }
 
     private void someTask() {
         Log.i("Services", "SomeTaskRun");
+        for (int i = 1; i<=15; i++){
+            Log.d("Services", "i = " + i);
+            try{
+                TimeUnit.SECONDS.sleep(1);
+            }catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }        }
     }
 }
