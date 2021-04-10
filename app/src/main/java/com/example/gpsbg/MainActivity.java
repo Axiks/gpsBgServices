@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -36,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements LOcListenerIteerf
         myLocListener = new MyLocListener();
         myLocListener.setlOcListenerIteerface(this);
         checkPermission();
+        //Init services
+        startService(new Intent(this, MyService.class));
     }
 
     @Override
