@@ -17,12 +17,17 @@ import androidx.core.util.TimeUtils;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -49,7 +54,7 @@ public class MyService extends Service implements LOcListenerIteerface{
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("Services", "Start");
-        someTask();
+        //someTask();
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -84,14 +89,18 @@ public class MyService extends Service implements LOcListenerIteerface{
 
 //        Loc nevLocation = new Loc(loc.getLatitude(), loc.getLongitude());
 //        mDataBase.push().setValue(nevLocation);
-
         // Create a new user with a first and last name
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.UK);
+        //String formattedDate = sdf.format(new Date());
+        Timestamp formattedDate = Timestamp.now();
+
         Map<String, Object> coord = new HashMap<>();
         coord.put("latitude", loc.getLatitude());
         coord.put("longitude", loc.getLongitude());
+        coord.put("datetime", formattedDate);
 
         // Add a new document with a generated ID
-        db.collection("users")
+        db.collection("coordinates")
                 .add(coord)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
