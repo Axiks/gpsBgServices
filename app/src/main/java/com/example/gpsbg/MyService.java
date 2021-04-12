@@ -11,18 +11,27 @@ import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.util.TimeUtils;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class MyService extends Service implements LOcListenerIteerface{
     private LocationManager locationManager;
     private MyLocListener myLocListener;
-    private DatabaseReference mDataBase;
+    //private DatabaseReference mDataBase;
+    private FirebaseFirestore db;
+
 
     public MyService() {
     }
@@ -32,7 +41,8 @@ public class MyService extends Service implements LOcListenerIteerface{
         locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         myLocListener = new MyLocListener();
         myLocListener.setlOcListenerIteerface(this);
-        mDataBase = FirebaseDatabase.getInstance().getReference("coordinates");
+        db = FirebaseFirestore.getInstance();
+//        mDataBase = FirebaseDatabase.getInstance().getReference("coordinates");
         checkPermission();
     }
 
@@ -72,8 +82,29 @@ public class MyService extends Service implements LOcListenerIteerface{
         text += loc.getLongitude();
         Log.i("Location Services", text);
 
-        Loc nevLocation = new Loc(loc.getLatitude(), loc.getLongitude());
-        mDataBase.push().setValue(nevLocation);
+//        Loc nevLocation = new Loc(loc.getLatitude(), loc.getLongitude());
+//        mDataBase.push().setValue(nevLocation);
+
+        // Create a new user with a first and last name
+        Map<String, Object> coord = new HashMap<>();
+        coord.put("latitude", loc.getLatitude());
+        coord.put("longitude", loc.getLongitude());
+
+        // Add a new document with a generated ID
+        db.collection("users")
+                .add(coord)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d("Firedatabase", "DocumentSnapshot added with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Firedatabase", "Error adding document", e);
+                    }
+                });
     }
 
     private void someTask() {
